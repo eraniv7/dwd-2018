@@ -82,6 +82,9 @@ socket.on('sendPlayer', function(player){
   console.log('recieved player', player);
   //seqarr = steps;
 });
+socket.on('notify everyone',function(data){
+    console.log('recieved data', data);
+})
 
 
 //////////////////

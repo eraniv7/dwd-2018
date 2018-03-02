@@ -36,22 +36,29 @@ app.get('/GetGridSize', function(req,res){
   res.send(obj)
 });
 
-var server = app.listen(3000, function () {
-  console.log('Example app listening on port 3000!')
+var server = app.listen(3001, function () {
+  console.log('Example app listening on port 3001!')
 });
 
 
 var sockets = io(server);
+setInterval(function() {
+  sockets.emit("notify everyone",'hello');
+}, 5000);
 // configure socket handlers
 sockets.on('connection', function(socket){
   //Hi this is all the users connected
   sockets.emit('usercount', sockets.engine.clientsCount);
   console.log('User num: ', sockets.engine.clientsCount);
 
+
   console.log('a user connected');
   socket.on('sendStep', function(data){
     seqarraystate = data.theData;
+      console.log('sendStep: ',data.theData);
     sockets.emit('sendSteps', seqarraystate);
+  //  socket.broadcast.emit("notify everyone",'hello');
+
     // console.log('emmiting array', seqarraystate);
   });
 
@@ -60,9 +67,12 @@ sockets.on('connection', function(socket){
     sockets.emit('usercount', sockets.engine.clientsCount);
     console.log('User num: ', sockets.engine.clientsCount);
   });
+
 //   setTimeout(function() {
 //   io.sockets.emit('message');
 // }, 1000 );
+
+
 
 });
 
